@@ -18,17 +18,22 @@ input,select,textarea{width:100%;padding:10px 12px;border:1px solid #e5e7eb;bord
 .chip{white-space:nowrap;padding:6px 14px;border-radius:99px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:14px}
 .chip.on{background:#4f46e5;color:#fff;border-color:#4f46e5}
 .card{background:#fff;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.card.vip{border:2px solid #f59e0b;background:#fffbeb}
 .flex{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .avatar{width:48px;height:48px;border-radius:50%;background:#4f46e5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}
+.avatar.vipA{background:#f59e0b}
 .btn{background:#4f46e5;color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:14px}
 .btn2{background:#fff;color:#4f46e5;border:1px solid #4f46e5;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:14px}
+.btnVIP{background:#f59e0b;color:#fff;border:0;padding:12px 14px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:700;width:100%;margin:6px 0}
 .btnWA{background:#25D366;color:#fff;border:0;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;text-decoration:none;display:inline-block;text-align:center}
 .btnVideo{background:#111;color:#fff;border:0;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;text-decoration:none;display:inline-block}
 .heart{font-size:22px;cursor:pointer;background:none;border:0}
 .badge{background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:99px;font-size:12px}
 .badge2{background:#dcfce7;color:#166534;padding:3px 8px;border-radius:99px;font-size:12px}
+.badgeVIP{background:#f59e0b;color:#fff;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700}
 .review{background:#f9fafb;padding:8px 10px;border-radius:10px;margin:6px 0;font-size:14px}
 .top{background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;border-radius:14px;padding:14px;margin:10px 0}
+.vipBox{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;border-radius:14px;padding:14px;margin:10px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -40,6 +45,7 @@ input,select,textarea{width:100%;padding:10px 12px;border:1px solid #e5e7eb;bord
 </nav>
 <main>
 <div id="experts">
+<div class="vipBox"><b>👑 خبراء VIP</b><br><span style="font-size:13px">الخبراء الذهبيين كيبانو هما اللولين و كيجيوهم حجوزات كثر!</span><div id="vipCount" style="margin-top:6px;font-size:13px"></div></div>
 <div class="top"><b>🏆 Top خبراء هاد السيمانة</b><div id="topList" style="margin-top:6px;font-size:14px"></div></div>
 <input id="search" placeholder="🔍 قلب على خبير..." oninput="render()">
 <div class="chips" id="cats"></div>
@@ -47,23 +53,28 @@ input,select,textarea{width:100%;padding:10px 12px;border:1px solid #e5e7eb;bord
 <select id="price" onchange="render()"><option value="">كل الأثمنة</option><option value="low">أقل من 100 درهم</option><option value="mid">100 - 200 درهم</option><option value="high">أكثر من 200 درهم</option></select>
 <select id="rate" onchange="render()"><option value="">كل التقييمات</option><option value="4.5">+4.5 ⭐</option><option value="4.8">+4.8 ⭐</option></select>
 </div>
+<button class="chip" onclick="onlyVIP=!onlyVIP;render();this.innerText=onlyVIP?'👑 VIP فقط ✓':'👑 VIP فقط'">👑 VIP فقط</button>
 <button class="chip" id="favBtn" onclick="toggleFav()">🤍 المفضلة فقط</button>
 <div id="list"></div>
 </div>
 <div id="bookings" style="display:none"><h3>📅 حجوزاتي</h3><p style="background:#fef9c3;padding:10px;border-radius:10px;font-size:14px">🔔 غنفكروك قبل كل جلسة بساعة! خلي التطبيق محلول.</p><div id="bookList"></div></div>
-<div id="become" style="display:none"><h3>🚀 كن خبيرا و بدا تربح</h3><input id="nName" placeholder="الاسم الكامل"><input id="nSkill" placeholder="المهارة - مثلا: تصميم"><input id="nPrice" type="number" placeholder="الثمن بالدرهم"><input id="nWA" placeholder="نمرة واتساب - مثلا: 0612345678"><select id="nAvail"><option value="متوفر اليوم">متوفر اليوم ✅</option><option value="متوفر غدا">متوفر غدا</option><option value="متوفر السبت و الأحد">متوفر السبت و الأحد</option></select><textarea id="nDesc" placeholder="شنو كتقدم؟"></textarea><button class="btn" onclick="addExpert()">نشر حسابي كخبير ✅</button></div>
+<div id="become" style="display:none">
+<div class="vipBox"><b>👑 ولي خبير VIP و ضاعف حجوزاتك!</b><p style="font-size:14px;margin:6px 0">✅ تبان هو اللول فالبحث<br>✅ علامة ذهبية 👑 + ✔️ موثّق<br>✅ تبان فـ Top خبراء<br><b>غير 49 درهم / شهر</b></p><button class="btn" style="background:#fff;color:#f97316" onclick="becomeVIP()">ولي VIP دابا 👑 - 49 درهم</button></div>
+<h3>🚀 كن خبيرا فابور و بدا تربح</h3><input id="nName" placeholder="الاسم الكامل"><input id="nSkill" placeholder="المهارة - مثلا: تصميم"><input id="nPrice" type="number" placeholder="الثمن بالدرهم"><input id="nWA" placeholder="نمرة واتساب - مثلا: 0612345678"><select id="nAvail"><option value="متوفر اليوم">متوفر اليوم ✅</option><option value="متوفر غدا">متوفر غدا</option><option value="متوفر السبت و الأحد">متوفر السبت و الأحد</option></select><textarea id="nDesc" placeholder="شنو كتقدم؟"></textarea><button class="btn" onclick="addExpert(false)">نشر حسابي فابور ✅</button><button class="btnVIP" onclick="addExpert(true)">نشر حسابي كـ VIP 👑 - 49 درهم</button><p style="font-size:13px;color:#6b7280;text-align:center">الخلاص: كاش / تحويل بنكي - غنتواصلو معاك فواتساب باش نأكدو الخلاص</p></div>
 </main>
 <script>
 let experts=[
-{id:1,name:"سلمى بنعلي",skill:"تصميم",cat:"تصميم",price:120,rate:4.9,desc:"تصميم شعارات و بوستات انستغرام",emoji:"🎨",wa:"212612345678",avail:"متوفر اليوم ✅",verified:true,reviews:[{n:"أمين",s:5,t:"خدمة واعرة، صايبات ليا لوغو فنهارو!"}]},
-{id:2,name:"يوسف العمراني",skill:"برمجة",cat:"برمجة",price:180,rate:4.8,desc:"مواقع و تطبيقات ويب",emoji:"💻",wa:"212698765432",avail:"متوفر غدا",verified:true,reviews:[{n:"خديجة",s:5,t:"شرح ليا كلشي ببساطة"}]},
-{id:3,name:"مريم الإدريسي",skill:"طبخ",cat:"طبخ",price:90,rate:4.9,desc:"أطباق مغربية و عالمية",emoji:"🍳",wa:"212655443322",avail:"متوفر السبت و الأحد",verified:false,reviews:[]},
-{id:4,name:"عمر الفاسي",skill:"لغة إنجليزية",cat:"لغات",price:100,rate:4.7,desc:"محادثة و تحضير للامتحانات",emoji:"🇬🇧",wa:"212677889900",avail:"متوفر اليوم ✅",verified:true,reviews:[]}
+{id:1,name:"سلمى بنعلي",skill:"تصميم",cat:"تصميم",price:120,rate:4.9,desc:"تصميم شعارات و بوستات انستغرام",emoji:"🎨",wa:"212612345678",avail:"متوفر اليوم ✅",verified:true,vip:true,reviews:[{n:"أمين",s:5,t:"خدمة واعرة، صايبات ليا لوغو فنهارو!"}]},
+{id:2,name:"يوسف العمراني",skill:"برمجة",cat:"برمجة",price:180,rate:4.8,desc:"مواقع و تطبيقات ويب",emoji:"💻",wa:"212698765432",avail:"متوفر غدا",verified:true,vip:false,reviews:[{n:"خديجة",s:5,t:"شرح ليا كلشي ببساطة"}]},
+{id:3,name:"مريم الإدريسي",skill:"طبخ",cat:"طبخ",price:90,rate:4.9,desc:"أطباق مغربية و عالمية",emoji:"🍳",wa:"212655443322",avail:"متوفر السبت و الأحد",verified:false,vip:true,reviews:[]},
+{id:4,name:"عمر الفاسي",skill:"لغة إنجليزية",cat:"لغات",price:100,rate:4.7,desc:"محادثة و تحضير للامتحانات",emoji:"🇬🇧",wa:"212677889900",avail:"متوفر اليوم ✅",verified:true,vip:false,reviews:[]}
 ];
 let favs=JSON.parse(localStorage.getItem('waqti_fav')||'[]');
 let bookings=JSON.parse(localStorage.getItem('waqti_book')||'[]');
 let myReviews=JSON.parse(localStorage.getItem('waqti_reviews')||'{}');
-let cat='الكل',onlyFav=false;
+let myExperts=JSON.parse(localStorage.getItem('waqti_myexperts')||'[]');
+myExperts.forEach(e=>experts.unshift(e));
+let cat='الكل',onlyFav=false,onlyVIP=false;
 function show(t){['experts','bookings','become'].forEach(x=>document.getElementById(x).style.display=x==t?'block':'none');['t1','t2','t3'].forEach((x,i)=>document.getElementById(x).className=(['experts','bookings','become'][i]==t?'on':''));if(t=='bookings')renderBooks();}
 function toggleFav(){onlyFav=!onlyFav;document.getElementById('favBtn').innerText=onlyFav?'❤️ المفضلة فقط':'🤍 المفضلة فقط';render();}
 function renderCats(){let cats=['الكل','تصميم','برمجة','طبخ','لغات'];document.getElementById('cats').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" onclick="cat='${c}';renderCats();render()">${c}</button>`).join('');}
@@ -72,21 +83,26 @@ function getReviews(e){return [...(e.reviews||[]),...(myReviews[e.id]||[])];}
 function render(){
 let q=(document.getElementById('search').value||'').toLowerCase();
 let pr=document.getElementById('price').value, rt=document.getElementById('rate').value;
-let sorted=[...experts].sort((a,b)=>b.rate-a.rate);
-document.getElementById('topList').innerHTML=sorted.slice(0,3).map((e,i)=>`#${i+1} ${e.emoji} ${e.name} - ${e.skill} ⭐ ${e.rate}`).join('<br>');
-let list=experts.filter(e=>{if(cat!='الكل'&&e.cat!=cat)return false;if(onlyFav&&!favs.includes(e.id))return false;if(q&&!(e.name+e.skill+e.desc).toLowerCase().includes(q))return false;if(pr=='low'&&e.price>=100)return false;if(pr=='mid'&&(e.price<100||e.price>200))return false;if(pr=='high'&&e.price<=200)return false;if(rt&&e.rate<parseFloat(rt))return false;return true;});
+let sorted=[...experts].sort((a,b)=>(b.vip?1:0)-(a.vip?1:0)||b.rate-a.rate);
+document.getElementById('topList').innerHTML=sorted.slice(0,3).map((e,i)=>`#${i+1} ${e.emoji} ${e.name} ${e.vip?'👑':''} - ${e.skill} ⭐ ${e.rate}`).join('<br>');
+document.getElementById('vipCount').innerHTML='عندنا دابا '+experts.filter(e=>e.vip).length+' خبراء VIP 👑';
+let list=experts.filter(e=>{if(cat!='الكل'&&e.cat!=cat)return false;if(onlyFav&&!favs.includes(e.id))return false;if(onlyVIP&&!e.vip)return false;if(q&&!(e.name+e.skill+e.desc).toLowerCase().includes(q))return false;if(pr=='low'&&e.price>=100)return false;if(pr=='mid'&&(e.price<100||e.price>200))return false;if(pr=='high'&&e.price<=200)return false;if(rt&&e.rate<parseFloat(rt))return false;return true;});
+list.sort((a,b)=>(b.vip?1:0)-(a.vip?1:0));
 document.getElementById('list').innerHTML=list.length?list.map(e=>{
 let revs=getReviews(e);
 let revHtml=revs.length?revs.map(r=>`<div class="review"><b>${r.n}</b> ${'⭐'.repeat(r.s)}<br>${r.t}</div>`).join(''):'<p style="color:#9ca3af;font-size:13px">باقي ما كاين حتى تعليق، كون نتا اللول!</p>';
-return `<div class="card"><div class="flex"><div style="display:flex;gap:10px;align-items:center"><div class="avatar">${e.emoji}</div><div><b>${e.name} ${e.verified?'✔️':''}</b><br><span style="color:#6b7280;font-size:13px">${e.skill} • ⭐ ${e.rate} (${revs.length} تقييم)</span><br><span class="badge2">📅 ${e.avail}</span></div></div><button class="heart" onclick="toggleHeart(${e.id})">${favs.includes(e.id)?'❤️':'🤍'}</button></div>
+return `<div class="card ${e.vip?'vip':''}"><div class="flex"><div style="display:flex;gap:10px;align-items:center"><div class="avatar ${e.vip?'vipA':''}">${e.emoji}</div><div><b>${e.name} ${e.verified?'✔️':''}</b> ${e.vip?'<span class="badgeVIP">👑 VIP</span>':''}<br><span style="color:#6b7280;font-size:13px">${e.skill} • ⭐ ${e.rate} (${revs.length} تقييم)</span><br><span class="badge2">📅 ${e.avail}</span></div></div><button class="heart" onclick="toggleHeart(${e.id})">${favs.includes(e.id)?'❤️':'🤍'}</button></div>
 <p style="color:#374151">${e.desc}</p>
 <div class="flex"><span class="badge">${e.price} درهم / جلسة</span><div style="display:flex;gap:6px;flex-wrap:wrap"><a class="btnWA" href="https://wa.me/${e.wa}?text=${encodeURIComponent('سلام! شفتك فتطبيق وقتي و بغيت نسول على '+e.skill)}" target="_blank">💬 واتساب</a><a class="btnVideo" href="https://meet.google.com/new" target="_blank">🎥 فيديو</a><button class="btn" onclick="book(${e.id})">احجز 📅</button></div></div>
+${!e.vip?`<button class="btnVIP" style="padding:8px;font-size:13px" onclick="upgradeToVIP(${e.id})">⬆️ طلع هاد الخبير لـ VIP 👑</button>`:''}
 <div style="margin-top:10px"><b>💬 التقييمات:</b>${revHtml}<div style="display:flex;gap:6px;margin-top:6px"><input id="rn${e.id}" placeholder="سميتك"><select id="rs${e.id}"><option value="5">⭐⭐⭐⭐⭐ 5</option><option value="4">⭐⭐⭐⭐ 4</option><option value="3">⭐⭐⭐ 3</option></select></div><input id="rt${e.id}" placeholder="شنو بان ليك فهاد الخبير؟"><button class="btn2" onclick="addReview(${e.id})">صيفط التقييم ✅</button></div></div>`}).join(''):'<p style="text-align:center;padding:20px">لا توجد نتائج 😔</p>';
 }
 function addReview(id){let n=document.getElementById('rn'+id).value||'زائر';let s=parseInt(document.getElementById('rs'+id).value);let t=document.getElementById('rt'+id).value;if(!t)return alert('كتب شي تعليق عافاك!');if(!myReviews[id])myReviews[id]=[];myReviews[id].push({n:n,s:s,t:t});localStorage.setItem('waqti_reviews',JSON.stringify(myReviews));alert('شكرا على التقييم! ⭐');render();}
 function book(id){let e=experts.find(x=>x.id==id);let d=prompt('شحال من نهار؟ مثلا: 2026-11-15 - '+e.avail);if(!d)return;let pay=prompt('كيفاش بغيتي تخلص؟ كتب: 1 = كاش من بعد الجلسة، 2 = تحويل بنكي');let payTxt=pay=='2'?'تحويل بنكي':'كاش من بعد الجلسة';bookings.push({name:e.name,skill:e.skill,price:e.price,date:d,wa:e.wa,pay:payTxt});localStorage.setItem('waqti_book',JSON.stringify(bookings));alert('تم الحجز مع '+e.name+' ✅\nالخلاص: '+payTxt+'\n🔔 غنفكروك قبل الجلسة بساعة!');show('bookings');}
 function renderBooks(){document.getElementById('bookList').innerHTML=bookings.length?bookings.map((b,i)=>`<div class="card"><b>${b.name}</b> - ${b.skill}<br>📅 ${b.date} • ${b.price} درهم • 💰 ${b.pay||'كاش'}<br><div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><a class="btnWA" href="https://wa.me/${b.wa}" target="_blank">💬 واتساب</a><a class="btnVideo" href="https://meet.google.com/new" target="_blank">🎥 بدا الفيديو</a><button class="btn2" onclick="bookings.splice(${i},1);localStorage.setItem('waqti_book',JSON.stringify(bookings));renderBooks()">إلغاء</button></div></div>`).join(''):'<p>ما عندكش حجوزات دابا، سير حجز شي خبير!</p>';}
-function addExpert(){let n=document.getElementById('nName').value,s=document.getElementById('nSkill').value,p=document.getElementById('nPrice').value,w=document.getElementById('nWA').value,a=document.getElementById('nAvail').value,d=document.getElementById('nDesc').value;if(!n||!s||!p)return alert('عمر كاع الخانات!');experts.unshift({id:Date.now(),name:n,skill:s,cat:s,price:parseInt(p),rate:5,desc:d||'خبير جديد',emoji:'⭐',wa:w?('212'+w.replace(/^0/,'').replace(/\s/g,'')):'212600000000',avail:a,verified:false,reviews:[]});alert('مبروك! وليتي خبير ✅');show('experts');render();}
+function becomeVIP(){alert('👑 مرحبا بيك فـ VIP!\n\nباش تكمل:\n1. صيفط لينا فواتساب: 0612345678\n2. صيفط 49 درهم تحويل بنكي / كاش\n3. غنطلعوك VIP فـ 5 دقايق!\n\nو غتولي تبان هو اللول و تجيك حجوزات كثر!');window.open('https://wa.me/212612345678?text='+encodeURIComponent('سلام! بغيت نولي VIP فتطبيق وقتي 👑 - 49 درهم'),' _blank');}
+function upgradeToVIP(id){let e=experts.find(x=>x.id==id);if(confirm('بغيتي تطلع '+e.name+' لـ VIP بـ 49 درهم / شهر؟ غيولي يبان هو اللول!')){e.vip=true;e.verified=true;render();alert('مبروك! '+e.name+' ولا VIP 👑\nصيفط 49 درهم فواتساب باش نأكدو: 0612345678');}}
+function addExpert(isVIP){let n=document.getElementById('nName').value,s=document.getElementById('nSkill').value,p=document.getElementById('nPrice').value,w=document.getElementById('nWA').value,a=document.getElementById('nAvail').value,d=document.getElementById('nDesc').value;if(!n||!s||!p)return alert('عمر كاع الخانات!');let ne={id:Date.now(),name:n,skill:s,cat:s,price:parseInt(p),rate:5,desc:d||'خبير جديد',emoji:'⭐',wa:w?('212'+w.replace(/^0/,'').replace(/\s/g,'')):'212600000000',avail:a,verified:isVIP?true:false,vip:isVIP?true:false,reviews:[]};experts.unshift(ne);myExperts.unshift(ne);localStorage.setItem('waqti_myexperts',JSON.stringify(myExperts));if(isVIP){alert('مبروك! وليتي VIP 👑\nصيفط 49 درهم فواتساب باش نأكدو ليك الحساب: 0612345678');}else{alert('مبروك! وليتي خبير ✅\nبغيتي تطلع VIP و تجيك حجوزات كثر؟ ورك على الزر الذهبي!');}show('experts');render();}
 renderCats();render();
 </script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}</script>
