@@ -4,21 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>وقتي - Waqti | حرفيي مدينتك</title>
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4f46e5">
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 font-sans">
 
-<!-- Header -->
-<header class="bg-indigo-600 text-white p-5 text-center sticky top-0 z-20">
+<header class="bg-indigo-600 text-white p-5 text-center">
   <h1 class="text-3xl font-bold">⏰ وقتي - Waqti</h1>
   <p class="text-sm mt-1 opacity-90">حرفيي مدينتك... في مكان واحد</p>
   <a href="#add" class="inline-block mt-3 bg-yellow-400 text-black px-5 py-2 rounded-full font-bold text-sm">+ سجّل حرفتك مجاناً</a>
 </header>
 
-<!-- City Selector -->
-<div class="bg-white shadow-sm sticky top-[112px] z-10 p-3">
+<div class="bg-white shadow-sm p-3">
   <div class="max-w-3xl mx-auto flex gap-2 items-center">
     <span class="text-sm font-bold whitespace-nowrap">📍 مدينتك:</span>
     <select id="cityFilter" onchange="setCity(this.value)" class="flex-1 p-2.5 border rounded-full bg-gray-50 font-bold outline-none">
@@ -47,7 +44,6 @@
   <p id="cityInfo" class="max-w-3xl mx-auto text-xs text-gray-500 mt-1.5">يعرض الآن: جميع الحرفيين في المغرب</p>
 </div>
 
-<!-- Search + Categories -->
 <div class="p-4 max-w-3xl mx-auto">
   <input id="search" oninput="filterExperts()" placeholder="ابحث... صباغ، نجار، مول هوندا..." class="w-full p-3 rounded-xl border shadow-sm outline-none bg-white">
   <div class="flex gap-2 overflow-x-auto mt-3 pb-1">
@@ -65,76 +61,56 @@
 
 <div id="experts" class="p-4 max-w-3xl mx-auto grid gap-4"></div>
 
-<!-- REGISTRATION FORM - شروط التسجيل -->
 <div id="add" class="max-w-3xl mx-auto p-4">
   <div class="bg-white p-5 rounded-[25px] shadow border-2 border-indigo-100">
     <h2 class="text-xl font-black">📝 التسجيل في وقتي</h2>
-    <p class="text-gray-500 text-sm">جميع الحقول إجبارية لكي يثق بك الزبناء</p>
-
+    <p class="text-gray-500 text-sm">رقمك غيبان للزبناء باش يعيطو ليك</p>
     <label class="block mt-4 text-sm font-bold">1. الاسم الشخصي *</label>
     <input id="f-first" placeholder="مثال: محمد" class="w-full mt-1 p-3 border rounded-xl outline-none">
-
     <label class="block mt-3 text-sm font-bold">2. الكنية (النسب) *</label>
     <input id="f-last" placeholder="مثال: الفاسي" class="w-full mt-1 p-3 border rounded-xl outline-none">
-
     <label class="block mt-3 text-sm font-bold">3. ما هي حرفتك؟ *</label>
     <select id="f-job" class="w-full mt-1 p-3 border rounded-xl outline-none bg-white">
       <option value="">-- اختر حرفتك --</option>
       <option>صباغ</option><option>نجار</option><option>نقل وترحيل - مول هوندا</option><option>نقل وترحيل - مول تريبورتور</option><option>كهربائي</option><option>سباك</option><option>بناء</option><option>حداد</option><option>ميكانيكي</option><option>محامي</option><option>مصمم</option><option>مبرمج</option><option>حرفة أخرى</option>
     </select>
-
     <label class="block mt-3 text-sm font-bold">4. المدينة *</label>
     <select id="f-city" class="w-full mt-1 p-3 border rounded-xl outline-none bg-white">
       <option value="">-- اختر مدينتك --</option>
       <option>طنجة</option><option>الدار البيضاء</option><option>الرباط</option><option>فاس</option><option>مراكش</option><option>أكادير</option><option>مكناس</option><option>وجدة</option><option>تطوان</option><option>العرائش</option><option>القنيطرة</option><option>الجديدة</option><option>آسفي</option><option>بني ملال</option><option>الناظور</option><option>الحسيمة</option><option>ورزازات</option><option>الداخلة</option><option>العيون</option>
     </select>
-
     <label class="block mt-3 text-sm font-bold">5. رقم الهاتف *</label>
     <input id="f-phone" placeholder="0612345678" class="w-full mt-1 p-3 border rounded-xl outline-none">
-
     <label class="block mt-3 text-sm font-bold">6. الثمن</label>
     <input id="f-price" placeholder="مثال: 200 درهم / اليوم" class="w-full mt-1 p-3 border rounded-xl outline-none">
-
     <label class="block mt-3 text-sm font-bold">7. رابط صورة عملك</label>
     <input id="f-img" placeholder="انسخ رابط صورة من جوجل (اختياري)" class="w-full mt-1 p-3 border rounded-xl outline-none">
-
     <label class="block mt-3 text-sm font-bold">8. صف خدمتك</label>
     <textarea id="f-desc" placeholder="خبرتك، سنوات العمل..." class="w-full mt-1 p-3 border rounded-xl outline-none"></textarea>
-
     <label class="flex gap-2 items-start mt-3 text-xs text-gray-600"><input type="checkbox" id="f-agree" class="mt-0.5"> أوافق على شروط وقتي: أتعهد أن معلوماتي صحيحة، وأن أقدم خدمة بجودة عالية، وأن أتحمل مسؤولية أي اتفاق مع الزبون.</label>
-
     <button onclick="addExpert()" class="w-full mt-4 bg-indigo-600 text-white py-3.5 rounded-full font-bold text-lg">نشر حسابي الآن ✅</button>
   </div>
 </div>
 
-<!-- VIP -->
 <div class="max-w-3xl mx-auto p-4">
   <div class="relative overflow-hidden rounded-[25px] p-6 text-white shadow-2xl" style="background: linear-gradient(135deg, #1e1b4b, #4f46e5, #7c3aed);">
     <h2 class="text-3xl font-black">وقتي VIP PRO 👑</h2>
     <p class="text-white/80 text-sm mt-1">للحرفيين: اظهر أولاً في مدينتك واحصل على زبناء أكثر</p>
     <div class="flex items-end gap-2 mt-4"><span class="text-5xl font-black">49</span><span>درهم / شهرياً</span><span class="line-through text-white/50 text-sm">99 درهم</span></div>
-    <a href="https://wa.me/212612345678?text=أريد الاشتراك في VIP PRO" class="block text-center mt-5 bg-yellow-400 text-black py-3.5 rounded-full font-black">اشترك الآن - 49 درهم 👑</a>
+    <a href="https://wa.me/212612345678?text=أريد الاشتراك في VIP PRO - https://anasfikri177.github.io/waqti/" class="block text-center mt-5 bg-yellow-400 text-black py-3.5 rounded-full font-black">اشترك الآن - 49 درهم 👑</a>
   </div>
 </div>
 
 <script>
-let defaultExperts = [
-  {first:"محمد", last:"الفاسي", name:"محمد الفاسي", job:"صباغ", price:"200 درهم / اليوم", phone:"0612345678", city:"طنجة", desc:"صباغة المنازل باحترافية، خبرة 10 سنوات", img:"🎨", photo:"https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=500"},
-  {first:"عبد الله", last:"التازي", name:"عبد الله التازي", job:"نجار", price:"250 درهم / اليوم", phone:"0623456789", city:"طنجة", desc:"نجارة الأبواب والمطابخ", img:"🪚", photo:"https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500"},
-  {first:"يوسف", last:"الطنجي", name:"يوسف الطنجي", job:"نقل وترحيل - مول هوندا", price:"150 درهم / نقلة", phone:"0634567890", city:"طنجة", desc:"نقل البضائع والرحيل، متوفر 24/24", img:"🚚", photo:"https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=500"},
-  {first:"كريم", last:"البيضاوي", name:"كريم البيضاوي", job:"نقل وترحيل - مول تريبورتور", price:"80 درهم / نقلة", phone:"0645678901", city:"الدار البيضاء", desc:"تريبورتور لنقل الأثاث بسرعة", img:"🛺", photo:""},
-  {first:"أمين", last:"الرباطي", name:"أمين الرباطي", job:"محامي", price:"150 درهم / ساعة", phone:"0656789012", city:"الرباط", desc:"استشارة قانونية", img:"⚖️", photo:""},
-  {first:"سارة", last:"المراكشية", name:"سارة المراكشية", job:"مصمم", price:"200 درهم", phone:"0667890123", city:"مراكش", desc:"تصميم شعار وهوية بصرية", img:"🎨", photo:""},
-];
+const OWNER_WHATSAPP = "212612345678";
+const SITE_LINK = "https://anasfikri177.github.io/waqti/";
+let defaultExperts = [];
 let saved = JSON.parse(localStorage.getItem('waqti_experts') || '[]');
 let experts = [...saved, ...defaultExperts];
 let currentCat = 'الكل';
 let currentCity = localStorage.getItem('waqti_city') || 'الكل';
-
-// عند الدخول، إذا كان الزائر اختار مدينة من قبل، تبقى محفوظة
 document.getElementById('cityFilter').value = currentCity;
 updateCityInfo();
-
 function updateCityInfo(){
   document.getElementById('cityInfo').textContent = currentCity=='الكل' ? 'يعرض الآن: جميع الحرفيين في المغرب' : 'يعرض الآن: حرفيي مدينة ' + currentCity + ' فقط';
 }
@@ -148,7 +124,9 @@ function render(list){
   if(list.length==0){
     document.getElementById('experts').innerHTML = `<div class="text-center py-10 bg-white rounded-2xl"><p class="text-4xl">🏙️</p><p class="font-bold mt-2">لا يوجد حرفيون في ${currentCity=='الكل'?'هذا التصنيف':'مدينة '+currentCity} بعد</p><p class="text-gray-400 text-sm">كن أول من يسجل في هذه المدينة!</p><a href="#add" class="inline-block mt-3 bg-indigo-600 text-white px-5 py-2 rounded-full text-sm font-bold">سجل الآن</a></div>`; return;
   }
-  document.getElementById('experts').innerHTML = list.map(e=>`
+  document.getElementById('experts').innerHTML = list.map(e=>{
+    let waMsg = encodeURIComponent("السلام عليكم، وجدت خدمتك في تطبيق وقتي 👇\n" + SITE_LINK + "\nبغيت نسولك على خدمتك");
+    return `
     <div class="bg-white rounded-2xl shadow overflow-hidden">
       ${e.photo ? `<img src="${e.photo}" class="w-full h-48 object-cover">` : ''}
       <div class="p-4 flex items-start gap-3">
@@ -160,12 +138,12 @@ function render(list){
           <p class="font-bold text-indigo-600 mt-1">${e.price}</p>
           <div class="flex gap-2 mt-3">
             <a href="tel:${e.phone}" class="flex-1 text-center bg-indigo-600 text-white py-2 rounded-full text-sm font-bold">📞 ${e.phone}</a>
-            <a href="https://wa.me/212${e.phone.slice(1)}?text=السلام عليكم، وجدت خدمتك في تطبيق وقتي" class="flex-1 text-center bg-green-500 text-white py-2 rounded-full text-sm font-bold">واتساب</a>
+            <a href="https://wa.me/212${e.phone.slice(1)}?text=${waMsg}" class="flex-1 text-center bg-green-500 text-white py-2 rounded-full text-sm font-bold">واتساب</a>
           </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 function setCat(cat){
   currentCat = cat;
@@ -177,7 +155,7 @@ function setCat(cat){
 }
 function filterExperts(){
   const q = document.getElementById('search').value.toLowerCase();
-  let list = experts.filter(e => (e.name+e.job+e.desc+e.city+e.phone).toLowerCase().includes(q));
+  let list = experts.filter(e => (e.name+e.job+e.desc+e.city+(e.phone||'')).toLowerCase().includes(q));
   if(currentCity!='الكل'){ list = list.filter(e => e.city == currentCity); }
   if(currentCat!='الكل'){ list = list.filter(e => e.job.includes(currentCat) || (currentCat=='نقل' && e.job.includes('نقل'))); }
   render(list);
@@ -202,15 +180,15 @@ function addExpert(){
   saved.unshift(newE);
   localStorage.setItem('waqti_experts', JSON.stringify(saved));
   experts.unshift(newE);
-  // بعد التسجيل، نعرض مدينته مباشرة
   document.getElementById('cityFilter').value = city;
   setCity(city);
+  let msg = "🔔 تسجيل جديد في وقتي:%0Aالاسم: " + first + " " + last + "%0Aالحرفة: " + job + "%0Aالمدينة: " + city + "%0Aالهاتف: " + phone + "%0Aالثمن: " + (price||'--') + "%0Aالوصف: " + (desc||'--') + "%0Aالموقع: " + SITE_LINK;
+  window.open("https://wa.me/" + OWNER_WHATSAPP + "?text=" + msg, "_blank");
   alert('تم نشر حسابك بنجاح في مدينة ' + city + ' 🎉');
   window.scrollTo({top:0, behavior:'smooth'});
   filterExperts();
 }
 filterExperts();
 </script>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}</script>
 </body>
 </html>
