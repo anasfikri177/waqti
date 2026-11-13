@@ -3,347 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وقتي - Waqti | دليل الحرفيين بالمغرب</title>
+    <title>وقتي - دليل الحرفيين وخدمات النقل بالمغرب</title>
+    <!-- استدعاء Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- استدعاء خط عربي عصري (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body { font-family: 'Cairo', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen text-slate-800 flex flex-col items-center justify-center p-4">
 
-    <!-- الهيدر -->
-    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-extrabold tracking-wide">🛠️ وقتي <span class="text-blue-200 text-lg font-normal">| Waqti</span></span>
+    <!-- نافذة الترحيب التعريفية (Modal) -->
+    <div id="welcomeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">
+                🚚🛠️
             </div>
-            <div class="flex gap-2">
-                <button onclick="switchTab('search')" id="btn-tab-search" class="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-sm font-bold shadow transition">ابحث عن حرفي</button>
-                <button onclick="switchTab('register')" id="btn-tab-register" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition">+ سجل كحرفي</button>
-            </div>
-        </div>
-    </header>
+            <h2 class="text-xl font-bold text-slate-900 mb-2">مرحباً بك في منصة "وقتي"</h2>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                الدليل الشامل لكل الحرفيين، الصناع، وأصحاب نقل البضائع في جميع مدن المغرب.
+            </p>
 
-    <!-- المحتوى الرئيسي -->
-    <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl">
-
-        <!-- قسم البحث عن حرفي -->
-        <section id="section-search" class="space-y-6">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                <h1 class="text-xl font-bold text-gray-800 mb-4">ابحث عن أفضل الحرفيين في مدينتك</h1>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <input type="text" id="search-input" onkeyup="filterArtisans()" placeholder="ابحث بالاسم أو التخصص..." class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    
-                    <select id="filter-job" onchange="filterArtisans()" class="w-full p-3 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">كل الحرف والتخصصات</option>
-                        <option value="سباك (بلومبي)">سباك (بلومبي)</option>
-                        <option value="كهربائي">كهربائي</option>
-                        <option value="نجار">نجار</option>
-                        <option value="صباغ">صباغ</option>
-                        <option value="بناء">بناء</option>
-                        <option value="حداد">حداد</option>
-                        <option value="ميكانيكي">ميكانيكي</option>
-                        <option value="خياط / خياطة">خياط / خياطة</option>
-                        <option value="إصلاح الأجهزة المنزلية">إصلاح الأجهزة المنزلية</option>
-                        <option value="تنظيف وصيانة">تنظيف وصيانة</option>
-                        <option value="أخرى">أخرى</option>
-                    </select>
-
-                    <select id="filter-city" onchange="filterArtisans()" class="w-full p-3 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">كل المدن المغربية</option>
-                        <option value="مكناس">مكناس</option>
-                        <option value="فاس">فاس</option>
-                        <option value="الرباط">الرباط</option>
-                        <option value="الدار البيضاء">الدار البيضاء</option>
-                        <option value="مراكش">مراكش</option>
-                        <option value="طنجة">طنجة</option>
-                        <option value="أكادير">أكادير</option>
-                        <option value="وجدة">وجدة</option>
-                        <option value="القنيطرة">القنيطرة</option>
-                        <option value="تطوان">تطوان</option>
-                        <option value="المحمدية">المحمدية</option>
-                        <option value="بني ملال">بني ملال</option>
-                        <option value="الناظور">الناظور</option>
-                        <option value="الجديدة">الجديدة</option>
-                        <option value="آسفي">آسفي</option>
-                        <option value="العيون">العيون</option>
-                    </select>
+            <div class="space-y-3 text-right mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div class="flex items-center gap-3">
+                    <span class="text-blue-600 text-sm font-bold">✓</span>
+                    <span class="text-xs text-slate-700">تغطية شاملة لكافة مدن المملكة المغربية</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-blue-600 text-sm font-bold">✓</span>
+                    <span class="text-xs text-slate-700">حرفيون، صناع تقليديون، وأصحاب نقل البضائع</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-blue-600 text-sm font-bold">✓</span>
+                    <span class="text-xs text-slate-700">إمكانية رفع عدة صور للأعمال وتفعيل حسابات VIP ⭐</span>
                 </div>
             </div>
 
-            <!-- مؤشر التحميل -->
-            <div id="loading-spinner" class="text-center py-10">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
-                <p class="text-gray-500 mt-2 text-sm">جاري تحميل قائمة الحرفيين...</p>
+            <button onclick="closeWelcomeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl shadow-lg shadow-blue-500/30 transition duration-200 text-sm">
+                فهمت، ابدأ الآن 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- حاوية التطبيق الرئيسية -->
+    <div class="max-w-md w-full bg-white/85 backdrop-blur-md rounded-3xl shadow-2xl border border-white/50 p-6 sm:p-8 transition-all duration-300">
+        
+        <!-- رأس الصفحة -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-blue-600 flex items-center gap-2">
+                    <span>🛠️</span> وقتي
+                </h1>
+                <p class="text-xs text-slate-500 mt-0.5">دليل الحرفيين وخدمات النقل بالمغرب</p>
+            </div>
+            <!-- زر المشاركة السريعة -->
+            <button onclick="shareApp()" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-2 rounded-2xl text-xs font-semibold flex items-center gap-1.5 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                مشاركة
+            </button>
+        </div>
+
+        <!-- زر تسجيل الدخول بواسطة جوجل -->
+        <div class="mb-5 flex justify-center">
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="pill"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+        </div>
+
+        <div class="relative flex py-2 items-center mb-4">
+            <div class="flex-grow border-t border-slate-200"></div>
+            <span class="flex-shrink mx-3 text-slate-400 text-xs bg-white px-2 rounded-full">أو التسجيل اليدوي</span>
+            <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <!-- نموذج التسجيل -->
+        <form id="artisanForm" class="space-y-3">
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">الاسم الكامل</label>
+                <input type="text" id="nameInput" required placeholder="مثال: أمين فكري" class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-sm">
             </div>
 
-            <!-- قائمة الحرفيين -->
-            <div id="artisans-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-
-            <!-- رسالة عدم وجود نتائج -->
-            <div id="no-results" class="hidden text-center py-12 bg-white rounded-2xl border border-gray-100">
-                <p class="text-gray-500 text-lg">لا يوجد حرفيون مطابقون لبحثك حالياً.</p>
-                <button onclick="switchTab('register')" class="mt-3 text-blue-600 font-bold hover:underline">كن أول من يسجل في هذه الفئة!</button>
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">البريد الإلكتروني</label>
+                <input type="email" id="emailInput" required placeholder="name@gmail.com" class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-sm">
             </div>
-        </section>
 
-        <!-- قسم تسجيل حرفي جديد -->
-        <section id="section-register" class="hidden">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 max-w-xl mx-auto">
-                <h2 class="text-xl font-bold text-gray-800 mb-2">تسجيل حساب حرفي جديد</h2>
-                <p class="text-gray-500 text-sm mb-6">أضف معلوماتك ليتمكن الزبناء في مدينتك من التواصل معك مباشرة.</p>
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">رقم الهاتف</label>
+                <input type="tel" id="phoneInput" required placeholder="06xxxxxxxx" class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-sm">
+            </div>
 
-                <form id="register-form" onsubmit="submitArtisan(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">1. الاسم الشخصي *</label>
-                            <input type="text" id="reg-fname" required placeholder="مثال: أحمد" class="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">2. الكنية (النسب) *</label>
-                            <input type="text" id="reg-lname" required placeholder="مثال: العلوي" class="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                    </div>
+            <!-- قائمة المدن المغربية -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">المدينة</label>
+                <select id="cityInput" required class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-sm">
+                    <option value="" disabled selected>اختر المدينة</option>
+                    <option value="مكناس">مكناس</option>
+                    <option value="فاس">فاس</option>
+                    <option value="الرباط">الرباط</option>
+                    <option value="الدار البيضاء">الدار البيضاء</option>
+                    <option value="مراكش">مراكش</option>
+                    <option value="طنجة">طنجة</option>
+                    <option value="أكادير">أكادير</option>
+                    <option value="وجدة">وجدة</option>
+                    <option value="تطوان">تطوان</option>
+                    <option value="سلا">سلا</option>
+                    <option value="القنيطرة">القنيطرة</option>
+                    <option value="أسفي">أسفي</option>
+                    <option value="بني ملال">بني ملال</option>
+                    <option value="الخريبكة">خريبكة</option>
+                    <option value="تازة">تازة</option>
+                    <option value="المحمدية">المحمدية</option>
+                    <option value="الجديدة">الجديدة</option>
+                    <option value="الناظور">الناظور</option>
+                    <option value="العيون">العيون</option>
+                    <option value="الداخلة">الداخلة</option>
+                    <option value="مدينة أخرى">مدينة أخرى</option>
+                </select>
+            </div>
 
+            <!-- قائمة الحرف، الصنائع، وخدمات النقل -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">الحرفة أو نوع الخدمة</label>
+                <select id="craftInput" required class="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-sm">
+                    <option value="" disabled selected>اختر الحرفة أو الخدمة</option>
+                    
+                    <optgroup label="🚚 خدمات نقل البضائع واللوجستيك">
+                        <option value="نقل البضائع والسلع (كاميو / شاحنة)">نقل البضائع والسلع (شاحنة / كاميو)</option>
+                        <option value="نقل الأثاث والترحال">نقل الأثاث والترحال (Deménagement)</option>
+                        <option value="خدمات التوصيل السريع">خدمات التوصيل السريع (Livraison)</option>
+                    </optgroup>
+
+                    <optgroup label="🛠️ البناء والصيانة العامة">
+                        <option value="سباك (Plombier)">سباك (Plombier)</option>
+                        <option value="كهربائي (Électricien)">كهربائي (Électricien)</option>
+                        <option value="بناء (Maçon)">بناء (Maçon)</option>
+                        <option value="صباغ (Peintre)">صباغ (Peintre)</option>
+                        <option value="نجار الخشب">نجار الخشب</option>
+                        <option value="نجار الألومنيوم والحديد">نجار الألومنيوم والحديد (Serrurier/Alu)</option>
+                        <option value="مصلح مكيفات وأجهزة منزلية">مصلح مكيفات وأجهزة منزلية</option>
+                    </optgroup>
+
+                    <optgroup label="🎨 الصناعة التقليدية المغربية والعالمية">
+                        <option value="خياط تقليدي / معلمين">خياط تقليدي / معلمين</option>
+                        <option value="طرز ونقش تقليدي">طرز ونقش تقليدي</option>
+                        <option value="صانع الزليج والفسيفساء">صانع الزليج والفسيفساء</option>
+                        <option value="حداد تقليدي">حداد تقليدي</option>
+                        <option value="صناعة الجلود والفضيات">صناعة الجلود والفضيات</option>
+                    </optgroup>
+
+                    <optgroup label="💻 خدمات أخرى وتكنولوجيا">
+                        <option value="تقني حواسيب وهواتف">تقني حواسيب وهواتف</option>
+                        <option value="بستاني وعناية بالحدائق">بستاني وعناية بالحدائق</option>
+                        <option value="خدمة أخرى">خدمة أخرى</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- رفع عدة صور للأعمال -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">صور الأعمال والشاحنات (اختيار أكثر من صورة 🖼️)</label>
+                <input type="file" id="imagesInput" multiple accept="image/*" class="w-full px-3 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition file:mr-4 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+            </div>
+
+            <!-- خانة تفعيل حساب VIP -->
+            <div class="bg-amber-50/70 border border-amber-200 p-3 rounded-2xl flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-amber-500 text-lg">⭐</span>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">3. الحرفة / التخصص *</label>
-                        <select id="reg-job" required class="w-full p-2.5 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="">اختر حرفتك...</option>
-                            <option value="سباك (بلومبي)">سباك (بلومبي)</option>
-                            <option value="كهربائي">كهربائي</option>
-                            <option value="نجار">نجار</option>
-                            <option value="صباغ">صباغ</option>
-                            <option value="بناء">بناء</option>
-                            <option value="حداد">حداد</option>
-                            <option value="ميكانيكي">ميكانيكي</option>
-                            <option value="خياط / خياطة">خياط / خياطة</option>
-                            <option value="إصلاح الأجهزة المنزلية">إصلاح الأجهزة المنزلية</option>
-                            <option value="تنظيف وصيانة">تنظيف وصيانة</option>
-                            <option value="أخرى">أخرى</option>
-                        </select>
+                        <span class="block text-xs font-bold text-amber-900">حساب VIP مميز</span>
+                        <span class="block text-[10px] text-amber-700">أولوية الظهور في الواجهة ودعم خاص</span>
                     </div>
+                </div>
+                <input type="checkbox" id="vipInput" class="w-5 h-5 accent-amber-500 rounded cursor-pointer">
+            </div>
 
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">4. المدينة *</label>
-                        <select id="reg-city" required class="w-full p-2.5 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="">اختر مدينتك...</option>
-                            <option value="مكناس">مكناس</option>
-                            <option value="فاس">فاس</option>
-                            <option value="الرباط">الرباط</option>
-                            <option value="الدار البيضاء">الدار البيضاء</option>
-                            <option value="مراكش">مراكش</option>
-                            <option value="طنجة">طنجة</option>
-                            <option value="أكادير">أكادير</option>
-                            <option value="وجدة">وجدة</option>
-                            <option value="القنيطرة">القنيطرة</option>
-                            <option value="تطوان">تطوان</option>
-                            <option value="المحمدية">المحمدية</option>
-                            <option value="بني ملال">بني ملال</option>
-                            <option value="الناظور">الناظور</option>
-                            <option value="الجديدة">الجديدة</option>
-                            <option value="آسفي">آسفي</option>
-                            <option value="العيون">العيون</option>
-                        </select>
-                    </div>
+            <button type="submit" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold py-3 rounded-2xl shadow-lg shadow-blue-500/30 transition duration-200 text-sm">
+                تأكيد التسجيل في المنصة
+            </button>
+        </form>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">5. رقم الهاتف (واتساب) *</label>
-                            <input type="tel" id="reg-phone" required placeholder="مثال: 0612345678" class="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" dir="ltr">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">6. الثمن التقريبي (درهم)</label>
-                            <input type="text" id="reg-price" placeholder="مثال: ابتداءً من 100 درهم" class="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">7. نبذة عن خدماتك وخبرتك *</label>
-                        <textarea id="reg-desc" rows="3" required placeholder="اذكر تفاصيل الخدمات التي تقدمها وسنوات الخبرة..." class="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">8. اختر صورة شخصية أو لأعمالك من جهازك</label>
-                        <input type="file" id="reg-photo-file" accept="image/*" class="w-full p-2 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-sm">
-                    </div>
-
-                    <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow transition flex justify-center items-center gap-2">
-                        <span>حفظ ونشر حسابي</span>
+        <!-- قسم الاشتراك في التنبيهات -->
+        <div class="mt-6 pt-5 border-t border-slate-200">
+            <div class="bg-blue-50/70 p-4 rounded-2xl border border-blue-100 text-center">
+                <h3 class="text-xs font-bold text-blue-900 mb-1">🔔 بغيت توصل بجديد الحرفيين والنقل؟</h3>
+                <p class="text-[11px] text-slate-500 mb-3">اشترك معنا ليصلك كل جديد مباشرة.</p>
+                <form id="subscribeForm" onsubmit="handleSubscribe(event)" class="flex gap-2">
+                    <input type="email" id="subEmail" required placeholder="أدخل بريدك الإلكتروني" class="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">
+                        اشتراك
                     </button>
                 </form>
+                <div id="subMessage" class="mt-2 text-[11px] font-medium"></div>
             </div>
-        </section>
+        </div>
 
-    </main>
-
-    <!-- الفوتر -->
-    <footer class="bg-white border-t border-gray-200 py-4 text-center text-gray-500 text-sm mt-10">
-        جميع الحقوق محفوظة © 2026 - منصة وقتي (Waqti) للحرفيين بالمغرب
-    </footer>
+        <div id="statusMessage" class="mt-4 text-center text-xs font-medium"></div>
+    </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbxW2VW6O_XIaONtxR5sbDMZHwAAGprIqzkGj863h1LnEsnDcj6bCkb0OZPUwSrban/exec";
+        // إغلاق نافذة الترحيب
+        function closeWelcomeModal() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        }
 
-        let allArtisans = [];
-
-        function switchTab(tab) {
-            const searchSec = document.getElementById('section-search');
-            const regSec = document.getElementById('section-register');
-            const btnSearch = document.getElementById('btn-tab-search');
-            const btnReg = document.getElementById('btn-tab-register');
-
-            if (tab === 'search') {
-                searchSec.classList.remove('hidden');
-                regSec.classList.add('hidden');
-                btnSearch.className = "bg-white text-blue-600 px-3 py-1.5 rounded-lg text-sm font-bold shadow transition";
-                btnReg.className = "bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition";
+        // دالة مشاركة الموقع
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'منصة وقتي',
+                    text: 'اكتشف منصة وقتي لدليل الحرفيين وخدمات نقل البضائع بالمغرب:',
+                    url: window.location.href,
+                }).catch(() => {});
             } else {
-                searchSec.classList.add('hidden');
-                regSec.classList.remove('hidden');
-                btnReg.className = "bg-white text-blue-600 px-3 py-1.5 rounded-lg text-sm font-bold shadow transition";
-                btnSearch.className = "bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition";
+                navigator.clipboard.writeText(window.location.href);
+                alert('تم نسخ رابط التطبيق بنجاح!');
             }
         }
 
-        async function loadArtisans() {
-            const spinner = document.getElementById('loading-spinner');
-            const listContainer = document.getElementById('artisans-list');
-            spinner.classList.remove('hidden');
-            listContainer.innerHTML = '';
-
-            try {
-                const response = await fetch(SCRIPT_URL);
-                const data = await response.json();
-                allArtisans = data.reverse(); 
-                renderArtisans(allArtisans);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                listContainer.innerHTML = `<div class="col-span-2 text-center text-red-500 py-6">حدث خطأ أثناء تحميل البيانات. تأكد من اتصالك بالإنترنت.</div>`;
-            } finally {
-                spinner.classList.add('hidden');
-            }
-        }
-
-        function renderArtisans(list) {
-            const container = document.getElementById('artisans-list');
-            const noResults = document.getElementById('no-results');
-            container.innerHTML = '';
-
-            if (!list || list.length === 0) {
-                noResults.classList.remove('hidden');
-                return;
-            }
-            noResults.classList.add('hidden');
-
-            list.forEach(item => {
-                if (!item.name) return;
-                const cleanPhone = String(item.phone || '').replace(/\s+/g, '');
-                const waPhone = cleanPhone.startsWith('0') ? '212' + cleanPhone.substring(1) : cleanPhone;
-                
-                // إذا كانت الصورة مرفوعة كـ Base64 أو رابط عادي يتم عرضها، وإلا يتم توليد صورة افتراضية بالحرف الأول
-                const avatar = item.photo && (item.photo.startsWith('http') || item.photo.startsWith('data:image'))
-                    ? item.photo 
-                    : `https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=2563eb&color=fff&size=128`;
-
-                const card = `
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center gap-3 mb-3">
-                                <img src="${avatar}" alt="${item.name}" class="w-14 h-14 rounded-full object-cover border border-gray-200">
-                                <div>
-                                    <h3 class="font-bold text-lg text-gray-800">${item.name}</h3>
-                                    <div class="flex flex-wrap gap-1.5 mt-1">
-                                        <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-0.5 rounded-full">${item.job || 'حرفي'}</span>
-                                        <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">📍 ${item.city || 'المغرب'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 text-sm mb-3 line-clamp-3">${item.desc || 'لا يوجد وصف متاح.'}</p>
-                        </div>
-                        <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
-                            <span class="text-sm font-bold text-emerald-600">${item.price ? item.price : 'الثمن حسب الاتفاق'}</span>
-                            <div class="flex gap-2">
-                                <a href="tel:${cleanPhone}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold transition">📞 اتصال</a>
-                                <a href="https://wa.me/${waPhone}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">💬 واتساب</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += card;
-            });
-        }
-
-        function filterArtisans() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const job = document.getElementById('filter-job').value;
-            const city = document.getElementById('filter-city').value;
-
-            const filtered = allArtisans.filter(item => {
-                const matchText = (item.name && item.name.toLowerCase().includes(query)) || 
-                                  (item.desc && item.desc.toLowerCase().includes(query)) ||
-                                  (item.job && item.job.toLowerCase().includes(query));
-                const matchJob = job === "" || item.job === job;
-                const matchCity = city === "" || item.city === city;
-                return matchText && matchJob && matchCity;
-            });
-
-            renderArtisans(filtered);
-        }
-
-        async function submitArtisan(e) {
+        // التعامل مع اشتراك النشرة البريدية
+        function handleSubscribe(e) {
             e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            btn.disabled = true;
-            btn.innerHTML = `<span>جاري معالجة الصورة والحفظ...</span>`;
+            const email = document.getElementById('subEmail').value;
+            document.getElementById('subMessage').innerHTML = '<span class="text-emerald-600 font-bold">شكراً لاشتراكك! سنتواصل معك قريباً.</span>';
+            document.getElementById('subEmail').value = '';
+        }
 
-            const fileInput = document.getElementById('reg-photo-file');
+        function decodeJwtResponse(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        function handleCredentialResponse(response) {
+            let responsePayload = decodeJwtResponse(response.credential);
+            document.getElementById('nameInput').value = responsePayload.name;
+            document.getElementById('emailInput').value = responsePayload.email;
+            document.getElementById('statusMessage').innerHTML = `<span class="text-emerald-600 font-semibold">مرحباً ${responsePayload.name}! تم جلب بياناتك من جوجل بنجاح.</span>`;
+        }
+
+        const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+
+        document.getElementById('artisanForm').addEventListener('submit', e => {
+            e.preventDefault();
             
-            // دالة لتحويل الصورة المرفوعة إلى Base64
-            const processImageAndSubmit = (photoBase64) => {
-                const fullName = document.getElementById('reg-fname').value.trim() + " " + document.getElementById('reg-lname').value.trim();
-                const payload = {
-                    name: fullName,
-                    job: document.getElementById('reg-job').value,
-                    city: document.getElementById('reg-city').value,
-                    phone: document.getElementById('reg-phone').value.trim(),
-                    price: document.getElementById('reg-price').value.trim(),
-                    desc: document.getElementById('reg-desc').value.trim(),
-                    photo: photoBase64 || "",
-                    isVip: false
-                };
+            const isVipChecked = document.getElementById('vipInput').checked;
+            const imageFiles = document.getElementById('imagesInput').files;
+            let imageNamesList = [];
+            for(let i = 0; i < imageFiles.length; i++) {
+                imageNamesList.push(imageFiles[i].name);
+            }
 
-                fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).then(() => {
-                    alert("✅ تم تسجيل معلوماتك بنجاح! ستظهر الآن في دليل الحرفيين.");
-                    document.getElementById('register-form').reset();
-                    switchTab('search');
-                    setTimeout(loadArtisans, 1500);
-                }).catch((error) => {
-                    console.error("Error submitting:", error);
-                    alert("❌ حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.");
-                }).finally(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = `<span>حفظ ونشر حسابي</span>`;
-                });
+            const formData = {
+                name: document.getElementById('nameInput').value,
+                email: document.getElementById('emailInput').value,
+                phone: document.getElementById('phoneInput').value,
+                city: document.getElementById('cityInput').value,
+                craft: document.getElementById('craftInput').value,
+                imagesCount: imageFiles.length + ' صور (' + imageNamesList.join(', ') + ')',
+                vipStatus: isVipChecked ? 'VIP ⭐ (مميز)' : 'عادي'
             };
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (uploadEvent) {
-                    processImageAndSubmit(uploadEvent.target.result);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                processImageAndSubmit("");
-            }
-        }
+            document.getElementById('statusMessage').innerHTML = '<span class="text-blue-500">جاري تسجيل البيانات...</span>';
 
-        window.onload = loadArtisans;
+            fetch(scriptURL, { 
+                method: 'POST', 
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                document.getElementById('statusMessage').innerHTML = '<span class="text-emerald-600 font-bold">تم التسجيل بنجاح! مرحبا بك في منصة وقتي.</span>';
+                document.getElementById('artisanForm').reset();
+            })
+            .catch(error => {
+                document.getElementById('statusMessage').innerHTML = '<span class="text-rose-600">حدث خطأ، حاول مجدداً.</span>';
+            });
+        });
     </script>
 </body>
 </html>
