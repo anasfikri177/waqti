@@ -1,194 +1,437 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>وقتي - Waqti | حرفيي مدينتك</title>
-<meta name="theme-color" content="#4f46e5">
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>وقتي - Waqti | حرفيي مدينتك</title>
+  <meta name="theme-color" content="#4f46e5">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-slate-50 text-slate-800 pb-10">
 
-<header class="bg-indigo-600 text-white p-5 text-center">
-  <h1 class="text-3xl font-bold">⏰ وقتي - Waqti</h1>
-  <p class="text-sm mt-1 opacity-90">حرفيي مدينتك... في مكان واحد</p>
-  <a href="#add" class="inline-block mt-3 bg-yellow-400 text-black px-5 py-2 rounded-full font-bold text-sm">+ سجّل حرفتك مجاناً</a>
-</header>
+  <!-- الهيدر -->
+  <header class="bg-gradient-to-l from-indigo-700 via-indigo-600 to-violet-600 text-white pt-6 pb-8 px-4 text-center rounded-b-[32px] shadow-lg">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight">⏰ وقتي - Waqti</h1>
+      <p class="text-sm md:text-base mt-1.5 text-indigo-100">أفضل الحرفيين والمهنيين في مدينتك... بضغطة زر</p>
+      <a href="#add" class="inline-flex items-center gap-1.5 mt-4 bg-amber-400 hover:bg-amber-300 transition text-slate-950 px-6 py-2.5 rounded-full font-extrabold text-sm shadow-md">
+        <span>+ سجّل حرفتك مجاناً</span>
+      </a>
+    </div>
+  </header>
 
-<div class="bg-white shadow-sm p-3">
-  <div class="max-w-3xl mx-auto flex gap-2 items-center">
-    <span class="text-sm font-bold whitespace-nowrap">📍 مدينتك:</span>
-    <select id="cityFilter" onchange="setCity(this.value)" class="flex-1 p-2.5 border rounded-full bg-gray-50 font-bold outline-none">
-      <option value="الكل">كل المدن - المغرب كامل</option>
-      <option value="طنجة">طنجة</option>
-      <option value="الدار البيضاء">الدار البيضاء</option>
-      <option value="الرباط">الرباط</option>
-      <option value="فاس">فاس</option>
-      <option value="مراكش">مراكش</option>
-      <option value="أكادير">أكادير</option>
-      <option value="مكناس">مكناس</option>
-      <option value="وجدة">وجدة</option>
-      <option value="تطوان">تطوان</option>
-      <option value="العرائش">العرائش</option>
-      <option value="القنيطرة">القنيطرة</option>
-      <option value="الجديدة">الجديدة</option>
-      <option value="آسفي">آسفي</option>
-      <option value="بني ملال">بني ملال</option>
-      <option value="الناظور">الناظور</option>
-      <option value="الحسيمة">الحسيمة</option>
-      <option value="ورزازات">ورزازات</option>
-      <option value="الداخلة">الداخلة</option>
-      <option value="العيون">العيون</option>
-    </select>
+  <!-- اختيار المدينة -->
+  <div class="max-w-3xl mx-auto px-4 -mt-5">
+    <div class="bg-white rounded-2xl shadow-md p-3.5 border border-slate-100">
+      <div class="flex gap-2 items-center">
+        <span class="text-sm font-extrabold text-indigo-950 whitespace-nowrap">📍 مدينتك:</span>
+        <select id="cityFilter" onchange="setCity(this.value)" class="flex-1 p-2.5 border border-slate-200 rounded-xl bg-slate-50 font-bold text-slate-700 outline-none focus:border-indigo-500 transition">
+          <option value="الكل">كل المدن - المغرب كامل 🇲🇦</option>
+        </select>
+      </div>
+      <div class="flex justify-between items-center mt-2 px-1">
+        <p id="cityInfo" class="text-xs text-slate-500 font-medium">يعرض الآن: جميع الحرفيين في المغرب</p>
+        <span id="countBadge" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-2.5 py-0.5 rounded-full">0 حرفي</span>
+      </div>
+    </div>
   </div>
-  <p id="cityInfo" class="max-w-3xl mx-auto text-xs text-gray-500 mt-1.5">يعرض الآن: جميع الحرفيين في المغرب</p>
-</div>
 
-<div class="p-4 max-w-3xl mx-auto">
-  <input id="search" oninput="filterExperts()" placeholder="ابحث... صباغ، نجار، مول هوندا..." class="w-full p-3 rounded-xl border shadow-sm outline-none bg-white">
-  <div class="flex gap-2 overflow-x-auto mt-3 pb-1">
-    <button onclick="setCat('الكل')" class="cat-btn bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap">الكل</button>
-    <button onclick="setCat('صباغ')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">🎨 صباغ</button>
-    <button onclick="setCat('نجار')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">🪚 نجار</button>
-    <button onclick="setCat('نقل')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">🚚 نقل وترحيل</button>
-    <button onclick="setCat('كهربائي')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">⚡ كهربائي</button>
-    <button onclick="setCat('سباك')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">🔧 سباك</button>
-    <button onclick="setCat('محامي')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">⚖️ محامي</button>
-    <button onclick="setCat('مصمم')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">🎨 مصمم</button>
-    <button onclick="setCat('مبرمج')" class="cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border">💻 مبرمج</button>
+  <!-- البحث والتصنيفات -->
+  <div class="p-4 max-w-3xl mx-auto mt-1">
+    <div class="relative">
+      <input id="search" oninput="filterExperts()" placeholder="ابحث بالاسم أو الحرفة... (صباغ، نجار، مول هوندا...)" class="w-full p-3.5 pr-10 rounded-2xl border border-slate-200 shadow-sm outline-none bg-white focus:border-indigo-500 transition text-sm">
+      <span class="absolute right-3.5 top-3.5 text-slate-400">🔍</span>
+    </div>
+    
+    <div id="categoriesContainer" class="flex gap-2 overflow-x-auto no-scrollbar mt-3 pb-1"></div>
   </div>
-</div>
 
-<div id="experts" class="p-4 max-w-3xl mx-auto grid gap-4"></div>
-
-<div id="add" class="max-w-3xl mx-auto p-4">
-  <div class="bg-white p-5 rounded-[25px] shadow border-2 border-indigo-100">
-    <h2 class="text-xl font-black">📝 التسجيل في وقتي</h2>
-    <p class="text-gray-500 text-sm">رقمك غيبان للزبناء باش يعيطو ليك</p>
-    <label class="block mt-4 text-sm font-bold">1. الاسم الشخصي *</label>
-    <input id="f-first" placeholder="مثال: محمد" class="w-full mt-1 p-3 border rounded-xl outline-none">
-    <label class="block mt-3 text-sm font-bold">2. الكنية (النسب) *</label>
-    <input id="f-last" placeholder="مثال: الفاسي" class="w-full mt-1 p-3 border rounded-xl outline-none">
-    <label class="block mt-3 text-sm font-bold">3. ما هي حرفتك؟ *</label>
-    <select id="f-job" class="w-full mt-1 p-3 border rounded-xl outline-none bg-white">
-      <option value="">-- اختر حرفتك --</option>
-      <option>صباغ</option><option>نجار</option><option>نقل وترحيل - مول هوندا</option><option>نقل وترحيل - مول تريبورتور</option><option>كهربائي</option><option>سباك</option><option>بناء</option><option>حداد</option><option>ميكانيكي</option><option>محامي</option><option>مصمم</option><option>مبرمج</option><option>حرفة أخرى</option>
-    </select>
-    <label class="block mt-3 text-sm font-bold">4. المدينة *</label>
-    <select id="f-city" class="w-full mt-1 p-3 border rounded-xl outline-none bg-white">
-      <option value="">-- اختر مدينتك --</option>
-      <option>طنجة</option><option>الدار البيضاء</option><option>الرباط</option><option>فاس</option><option>مراكش</option><option>أكادير</option><option>مكناس</option><option>وجدة</option><option>تطوان</option><option>العرائش</option><option>القنيطرة</option><option>الجديدة</option><option>آسفي</option><option>بني ملال</option><option>الناظور</option><option>الحسيمة</option><option>ورزازات</option><option>الداخلة</option><option>العيون</option>
-    </select>
-    <label class="block mt-3 text-sm font-bold">5. رقم الهاتف *</label>
-    <input id="f-phone" placeholder="0612345678" class="w-full mt-1 p-3 border rounded-xl outline-none">
-    <label class="block mt-3 text-sm font-bold">6. الثمن</label>
-    <input id="f-price" placeholder="مثال: 200 درهم / اليوم" class="w-full mt-1 p-3 border rounded-xl outline-none">
-    <label class="block mt-3 text-sm font-bold">7. رابط صورة عملك</label>
-    <input id="f-img" placeholder="انسخ رابط صورة من جوجل (اختياري)" class="w-full mt-1 p-3 border rounded-xl outline-none">
-    <label class="block mt-3 text-sm font-bold">8. صف خدمتك</label>
-    <textarea id="f-desc" placeholder="خبرتك، سنوات العمل..." class="w-full mt-1 p-3 border rounded-xl outline-none"></textarea>
-    <label class="flex gap-2 items-start mt-3 text-xs text-gray-600"><input type="checkbox" id="f-agree" class="mt-0.5"> أوافق على شروط وقتي: أتعهد أن معلوماتي صحيحة، وأن أقدم خدمة بجودة عالية، وأن أتحمل مسؤولية أي اتفاق مع الزبون.</label>
-    <button onclick="addExpert()" class="w-full mt-4 bg-indigo-600 text-white py-3.5 rounded-full font-bold text-lg">نشر حسابي الآن ✅</button>
+  <!-- قائمة الحرفيين -->
+  <div id="experts" class="px-4 max-w-3xl mx-auto grid gap-4">
+    <div class="text-center py-10 bg-white rounded-3xl"><p class="text-slate-400">جاري تحميل الحرفيين...</p></div>
   </div>
-</div>
 
-<div class="max-w-3xl mx-auto p-4">
-  <div class="relative overflow-hidden rounded-[25px] p-6 text-white shadow-2xl" style="background: linear-gradient(135deg, #1e1b4b, #4f46e5, #7c3aed);">
-    <h2 class="text-3xl font-black">وقتي VIP PRO 👑</h2>
-    <p class="text-white/80 text-sm mt-1">للحرفيين: اظهر أولاً في مدينتك واحصل على زبناء أكثر</p>
-    <div class="flex items-end gap-2 mt-4"><span class="text-5xl font-black">49</span><span>درهم / شهرياً</span><span class="line-through text-white/50 text-sm">99 درهم</span></div>
-    <a href="https://wa.me/212612345678?text=أريد الاشتراك في VIP PRO - https://anasfikri177.github.io/waqti/" class="block text-center mt-5 bg-yellow-400 text-black py-3.5 rounded-full font-black">اشترك الآن - 49 درهم 👑</a>
-  </div>
-</div>
-
-<script>
-const OWNER_WHATSAPP = "212612345678";
-const SITE_LINK = "https://anasfikri177.github.io/waqti/";
-let defaultExperts = [];
-let saved = JSON.parse(localStorage.getItem('waqti_experts') || '[]');
-let experts = [...saved, ...defaultExperts];
-let currentCat = 'الكل';
-let currentCity = localStorage.getItem('waqti_city') || 'الكل';
-document.getElementById('cityFilter').value = currentCity;
-updateCityInfo();
-function updateCityInfo(){
-  document.getElementById('cityInfo').textContent = currentCity=='الكل' ? 'يعرض الآن: جميع الحرفيين في المغرب' : 'يعرض الآن: حرفيي مدينة ' + currentCity + ' فقط';
-}
-function setCity(city){
-  currentCity = city;
-  localStorage.setItem('waqti_city', city);
-  updateCityInfo();
-  filterExperts();
-}
-function render(list){
-  if(list.length==0){
-    document.getElementById('experts').innerHTML = `<div class="text-center py-10 bg-white rounded-2xl"><p class="text-4xl">🏙️</p><p class="font-bold mt-2">لا يوجد حرفيون في ${currentCity=='الكل'?'هذا التصنيف':'مدينة '+currentCity} بعد</p><p class="text-gray-400 text-sm">كن أول من يسجل في هذه المدينة!</p><a href="#add" class="inline-block mt-3 bg-indigo-600 text-white px-5 py-2 rounded-full text-sm font-bold">سجل الآن</a></div>`; return;
-  }
-  document.getElementById('experts').innerHTML = list.map(e=>{
-    let waMsg = encodeURIComponent("السلام عليكم، وجدت خدمتك في تطبيق وقتي 👇\n" + SITE_LINK + "\nبغيت نسولك على خدمتك");
-    return `
-    <div class="bg-white rounded-2xl shadow overflow-hidden">
-      ${e.photo ? `<img src="${e.photo}" class="w-full h-48 object-cover">` : ''}
-      <div class="p-4 flex items-start gap-3">
-        <div class="text-4xl bg-indigo-50 w-14 h-14 rounded-full flex items-center justify-center shrink-0">${e.img || '👷'}</div>
-        <div class="flex-1">
-          <h3 class="font-bold text-lg">${e.name} <span class="text-[11px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full">متاح</span></h3>
-          <p class="text-indigo-600 font-bold text-sm">${e.job} • 📍 ${e.city}</p>
-          <p class="text-gray-500 text-sm mt-1">${e.desc || ''}</p>
-          <p class="font-bold text-indigo-600 mt-1">${e.price}</p>
-          <div class="flex gap-2 mt-3">
-            <a href="tel:${e.phone}" class="flex-1 text-center bg-indigo-600 text-white py-2 rounded-full text-sm font-bold">📞 ${e.phone}</a>
-            <a href="https://wa.me/212${e.phone.slice(1)}?text=${waMsg}" class="flex-1 text-center bg-green-500 text-white py-2 rounded-full text-sm font-bold">واتساب</a>
-          </div>
+  <!-- استمارة التسجيل -->
+  <div id="add" class="max-w-3xl mx-auto p-4 mt-6">
+    <div class="bg-white p-6 rounded-[28px] shadow-sm border border-indigo-100">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">📝</span>
+        <div>
+          <h2 class="text-xl font-black text-slate-900">التسجيل كحرفي في وقتي</h2>
+          <p class="text-slate-500 text-xs">سجّل معلوماتك مجاناً ليتمكن الزبناء من الاتصال بك مباشرة</p>
         </div>
       </div>
-    </div>`;
-  }).join('');
-}
-function setCat(cat){
-  currentCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b=>{
-    if(b.textContent.includes(cat) || (cat=='الكل' && b.textContent=='الكل')){ b.className='cat-btn bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap'; }
-    else { b.className='cat-btn bg-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap border'; }
-  });
-  filterExperts();
-}
-function filterExperts(){
-  const q = document.getElementById('search').value.toLowerCase();
-  let list = experts.filter(e => (e.name+e.job+e.desc+e.city+(e.phone||'')).toLowerCase().includes(q));
-  if(currentCity!='الكل'){ list = list.filter(e => e.city == currentCity); }
-  if(currentCat!='الكل'){ list = list.filter(e => e.job.includes(currentCat) || (currentCat=='نقل' && e.job.includes('نقل'))); }
-  render(list);
-}
-function addExpert(){
-  const first = document.getElementById('f-first').value.trim();
-  const last = document.getElementById('f-last').value.trim();
-  const job = document.getElementById('f-job').value;
-  const city = document.getElementById('f-city').value;
-  const phone = document.getElementById('f-phone').value.trim();
-  const price = document.getElementById('f-price').value;
-  const photo = document.getElementById('f-img').value;
-  const desc = document.getElementById('f-desc').value;
-  const agree = document.getElementById('f-agree').checked;
-  if(!first){ alert('المرجو إدخال الاسم الشخصي'); return; }
-  if(!last){ alert('المرجو إدخال الكنية'); return; }
-  if(!job){ alert('المرجو اختيار حرفتك'); return; }
-  if(!city){ alert('المرجو اختيار مدينتك'); return; }
-  if(!phone || phone.length < 10){ alert('المرجو إدخال رقم هاتف صحيح'); return; }
-  if(!agree){ alert('يجب الموافقة على الشروط'); return; }
-  const newE = {first:first, last:last, name:first+' '+last, job:job, phone:phone, price:price||'يحدد بعد الاتصال', city:city, desc:desc, img:'👷', photo:photo};
-  saved.unshift(newE);
-  localStorage.setItem('waqti_experts', JSON.stringify(saved));
-  experts.unshift(newE);
-  document.getElementById('cityFilter').value = city;
-  setCity(city);
-  let msg = "🔔 تسجيل جديد في وقتي:%0Aالاسم: " + first + " " + last + "%0Aالحرفة: " + job + "%0Aالمدينة: " + city + "%0Aالهاتف: " + phone + "%0Aالثمن: " + (price||'--') + "%0Aالوصف: " + (desc||'--') + "%0Aالموقع: " + SITE_LINK;
-  window.open("https://wa.me/" + OWNER_WHATSAPP + "?text=" + msg, "_blank");
-  alert('تم نشر حسابك بنجاح في مدينة ' + city + ' 🎉');
-  window.scrollTo({top:0, behavior:'smooth'});
-  filterExperts();
-}
-filterExperts();
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700">1. الاسم الشخصي *</label>
+          <input id="f-first" placeholder="مثال: محمد" class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700">2. الكنية (النسب) *</label>
+          <input id="f-last" placeholder="مثال: الفاسي" class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-sm">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700">3. ما هي حرفتك؟ *</label>
+          <select id="f-job" class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none bg-white focus:border-indigo-500 text-sm">
+            <option value="">-- اختر حرفتك --</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700">4. المدينة *</label>
+          <select id="f-city" class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none bg-white focus:border-indigo-500 text-sm">
+            <option value="">-- اختر مدينتك --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700">5. رقم الهاتف (واتساب) *</label>
+          <input id="f-phone" type="tel" dir="ltr" placeholder="0612345678" class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-sm text-right">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700">6. الثمن التقريبي</label>
+          <input id="f-price" placeholder="مثال: 200 درهم / اليوم" class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-sm">
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label class="block text-xs font-bold text-slate-700">7. رابط صورة لعملك (اختياري)</label>
+        <input id="f-img" type="url" dir="ltr" placeholder="https://..." class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-sm text-right">
+      </div>
+
+      <div class="mt-3">
+        <label class="block text-xs font-bold text-slate-700">8. صف خدمتك وخبرتك</label>
+        <textarea id="f-desc" rows="2" placeholder="تحدث باختصار عن خبرتك، سنوات العمل، وجودة الخدمة..." class="w-full mt-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-sm"></textarea>
+      </div>
+
+      <label class="flex gap-2.5 items-start mt-4 text-xs text-slate-600 cursor-pointer bg-slate-50 p-3 rounded-xl">
+        <input type="checkbox" id="f-agree" class="mt-0.5 accent-indigo-600 w-4 h-4">
+        <span>أوافق على شروط وقتي: أتعهد أن معلوماتي صحيحة، وأن أقدم خدمة بجودة عالية، وأن أتحمل مسؤولية أي اتفاق مع الزبون.</span>
+      </label>
+
+      <button id="submitBtn" onclick="addExpert()" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] transition text-white py-3.5 rounded-full font-extrabold text-base shadow-md">
+        نشر حسابي الآن ✅
+      </button>
+    </div>
+  </div>
+
+  <!-- باقة VIP -->
+  <div class="max-w-3xl mx-auto px-4 mt-4">
+    <div class="relative overflow-hidden rounded-[28px] p-6 text-white shadow-xl" style="background: linear-gradient(135deg, #1e1b4b, #4f46e5, #7c3aed);">
+      <div class="relative z-10">
+        <span class="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-bold px-3 py-1 rounded-full">عرض خاص للحرفيين</span>
+        <h2 class="text-2xl md:text-3xl font-black mt-2">وقتي VIP PRO 👑</h2>
+        <p class="text-indigo-100 text-sm mt-1">اظهر في <span class="text-amber-300 font-bold">أعلى القائمة</span> في مدينتك بإطار ذهبي واحصل على 3 أضعاف الزبناء!</p>
+        <div class="flex items-baseline gap-2 mt-4">
+          <span class="text-4xl md:text-5xl font-black text-amber-400">49</span>
+          <span class="font-bold">درهم / شهرياً</span>
+          <span class="line-through text-white/40 text-sm mr-1">99 درهم</span>
+        </div>
+        <a href="https://wa.me/212612345678?text=السلام%20عليكم،%20أريد%20الاشتراك%20في%20باقة%20وقتي%20VIP%20PRO%20👑" target="_blank" class="block text-center mt-5 bg-amber-400 hover:bg-amber-300 transition text-slate-950 py-3.5 rounded-full font-black shadow-lg">
+          اشترك الآن عبر واتساب 👑
+        </a>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const OWNER_WHATSAPP = "212612345678";
+  const SITE_LINK = "https://anasfikri177.github.io/waqti/";
+  
+  // ⚠️ ضع رابط Google Apps Script (Web App) هنا بين علامتي التنصيص:
+  const SCRIPT_URL = "ضع_رابط_الويب_أب_هنا";
+
+  const CITIES = [
+    "طنجة", "الدار البيضاء", "الرباط", "فاس", "مراكش", "أكادير", 
+    "مكناس", "وجدة", "تطوان", "العرائش", "القنيطرة", "الجديدة", 
+    "آسفي", "بني ملال", "الناظور", "الحسيمة", "ورزازات", "الداخلة", "العيون"
+  ];
+
+  const JOBS = [
+    { name: "صباغ", cat: "صباغ", icon: "🎨" },
+    { name: "نجار", cat: "نجار", icon: "🪚" },
+    { name: "نقل وترحيل - مول هوندا", cat: "نقل", icon: "🚚" },
+    { name: "نقل وترحيل - مول تريبورتور", cat: "نقل", icon: "🛵" },
+    { name: "كهربائي", cat: "كهربائي", icon: "⚡" },
+    { name: "سباك", cat: "سباك", icon: "🔧" },
+    { name: "بناء", cat: "بناء", icon: "🧱" },
+    { name: "حداد", cat: "حداد", icon: "⚒️" },
+    { name: "ميكانيكي", cat: "ميكانيكي", icon: "🔩" },
+    { name: "محامي", cat: "محامي", icon: "⚖️" },
+    { name: "مصمم", cat: "مصمم", icon: "🖌️" },
+    { name: "مبرمج", cat: "مبرمج", icon: "💻" },
+    { name: "حرفة أخرى", cat: "أخرى", icon: "👷" }
+  ];
+
+  const FILTER_CATS = [
+    { id: "الكل", label: "الكل" },
+    { id: "صباغ", label: "🎨 صباغ" },
+    { id: "نجار", label: "🪚 نجار" },
+    { id: "نقل", label: "🚚 نقل وترحيل" },
+    { id: "كهربائي", label: "⚡ كهربائي" },
+    { id: "سباك", label: "🔧 سباك" },
+    { id: "محامي", label: "⚖️ محامي" },
+    { id: "مصمم", label: "🖌️ مصمم" },
+    { id: "مبرمج", label: "💻 مبرمج" }
+  ];
+
+  let experts = [];
+  let currentCat = 'الكل';
+  let currentCity = localStorage.getItem('waqti_city') || 'الكل';
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[tag]));
+  }
+
+  function formatWhatsAppPhone(phone) {
+    let cleaned = String(phone).replace(/\D/g, '');
+    if (cleaned.startsWith('0')) return '212' + cleaned.slice(1);
+    if (cleaned.startsWith('212')) return cleaned;
+    return '212' + cleaned;
+  }
+
+  async function fetchExperts() {
+    if (SCRIPT_URL.includes("ضع_رابط")) {
+      experts = [];
+      filterExperts();
+      return;
+    }
+    try {
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json();
+      experts = data.map(e => ({
+        name: e.name,
+        job: e.job,
+        city: e.city,
+        phone: e.phone,
+        price: e.price,
+        desc: e.desc,
+        photo: e.photo,
+        img: JOBS.find(j => j.name === e.job)?.icon || '👷',
+        isVip: String(e.isvip).toLowerCase() === 'true' || e.isvip === true
+      })).reverse();
+    } catch (err) {
+      console.error(err);
+    }
+    filterExperts();
+  }
+
+  function initUI() {
+    const cityFilter = document.getElementById('cityFilter');
+    const formCity = document.getElementById('f-city');
+    CITIES.forEach(c => {
+      cityFilter.innerHTML += `<option value="${c}">${c}</option>`;
+      formCity.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+    cityFilter.value = currentCity;
+
+    const formJob = document.getElementById('f-job');
+    JOBS.forEach(j => {
+      formJob.innerHTML += `<option value="${j.name}">${j.icon} ${j.name}</option>`;
+    });
+
+    const catContainer = document.getElementById('categoriesContainer');
+    catContainer.innerHTML = FILTER_CATS.map(c => `
+      <button onclick="setCat('${c.id}')" data-cat="${c.id}" class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition ${c.id === 'الكل' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}">
+        ${c.label}
+      </button>
+    `).join('');
+
+    updateCityInfo();
+    fetchExperts();
+  }
+
+  function updateCityInfo() {
+    document.getElementById('cityInfo').textContent = currentCity === 'الكل' 
+      ? 'يعرض الآن: جميع الحرفيين في المغرب' 
+      : `يعرض الآن: حرفيي مدينة ${currentCity} فقط`;
+  }
+
+  function setCity(city) {
+    currentCity = city;
+    localStorage.setItem('waqti_city', city);
+    updateCityInfo();
+    filterExperts();
+  }
+
+  function setCat(cat) {
+    currentCat = cat;
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      if (btn.dataset.cat === cat) {
+        btn.className = 'cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition bg-indigo-600 text-white shadow-sm';
+      } else {
+        btn.className = 'cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+      }
+    });
+    filterExperts();
+  }
+
+  function render(list) {
+    document.getElementById('countBadge').textContent = `${list.length} حرفي`;
+
+    if (list.length === 0) {
+      document.getElementById('experts').innerHTML = `
+        <div class="text-center py-12 px-4 bg-white rounded-3xl border border-slate-100 shadow-sm">
+          <p class="text-5xl">🏙️</p>
+          <p class="font-extrabold text-slate-800 mt-3 text-lg">لا يوجد حرفيون في ${currentCity === 'الكل' ? 'هذا التصنيف' : 'مدينة ' + currentCity} بعد</p>
+          <p class="text-slate-400 text-sm mt-1">كن أول حرفي يسجل هنا واحصل على زبناء مدينتك!</p>
+          <a href="#add" class="inline-block mt-4 bg-indigo-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow">سجّل حرفتك الآن</a>
+        </div>`;
+      return;
+    }
+
+    const sortedList = [...list].sort((a, b) => (b.isVip ? 1 : 0) - (a.isVip ? 1 : 0));
+
+    document.getElementById('experts').innerHTML = sortedList.map(e => {
+      const waPhone = formatWhatsAppPhone(e.phone);
+      const waMsg = encodeURIComponent(`السلام عليكم ${e.name}، وجدت خدمتك في تطبيق وقتي 👇\n${SITE_LINK}\nبغيت نسولك على خدمتك`);
+      
+      const cardStyle = e.isVip 
+        ? 'bg-gradient-to-b from-amber-50/70 to-white border-2 border-amber-400 shadow-md' 
+        : 'bg-white border border-slate-100 shadow-sm';
+
+      return `
+      <div class="${cardStyle} rounded-3xl overflow-hidden transition hover:shadow-md">
+        ${e.photo ? `<img src="${escapeHTML(e.photo)}" onerror="this.style.display='none'" class="w-full h-48 object-cover">` : ''}
+        <div class="p-4 md:p-5 flex items-start gap-3.5">
+          <div class="text-3xl bg-indigo-50 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border border-indigo-100">
+            ${e.img || '👷'}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <h3 class="font-extrabold text-lg text-slate-900 truncate">${escapeHTML(e.name)}</h3>
+              ${e.isVip ? `<span class="text-[11px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded-full">👑 VIP</span>` : ''}
+              <span class="text-[11px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full">متاح</span>
+            </div>
+            
+            <p class="text-indigo-600 font-bold text-sm mt-0.5">${escapeHTML(e.job)} • 📍 ${escapeHTML(e.city)}</p>
+            ${e.desc ? `<p class="text-slate-500 text-xs md:text-sm mt-1.5 leading-relaxed">${escapeHTML(e.desc)}</p>` : ''}
+            <p class="font-extrabold text-slate-800 text-sm mt-2">💰 ${escapeHTML(e.price)}</p>
+            
+            <div class="flex gap-2 mt-3.5">
+              <a href="tel:${escapeHTML(e.phone)}" class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-xs md:text-sm font-bold transition shadow-sm">
+                📞 اتصال (${escapeHTML(e.phone)})
+              </a>
+              <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" class="flex-1 text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs md:text-sm font-bold transition shadow-sm">
+                💬 واتساب
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function filterExperts() {
+    const q = document.getElementById('search').value.toLowerCase().trim();
+    let list = experts.filter(e => 
+      ((e.name || '') + ' ' + (e.job || '') + ' ' + (e.desc || '') + ' ' + (e.city || '') + ' ' + (e.phone || '')).toLowerCase().includes(q)
+    );
+    
+    if (currentCity !== 'الكل') {
+      list = list.filter(e => e.city === currentCity);
+    }
+    
+    if (currentCat !== 'الكل') {
+      list = list.filter(e => (e.job || '').includes(currentCat));
+    }
+    
+    render(list);
+  }
+
+  async function addExpert() {
+    const first = document.getElementById('f-first').value.trim();
+    const last = document.getElementById('f-last').value.trim();
+    const job = document.getElementById('f-job').value;
+    const city = document.getElementById('f-city').value;
+    const phone = document.getElementById('f-phone').value.trim();
+    const price = document.getElementById('f-price').value.trim();
+    const photo = document.getElementById('f-img').value.trim();
+    const desc = document.getElementById('f-desc').value.trim();
+    const agree = document.getElementById('f-agree').checked;
+
+    if (!first) return alert('المرجو إدخال الاسم الشخصي');
+    if (!last) return alert('المرجو إدخال الكنية');
+    if (!job) return alert('المرجو اختيار حرفتك');
+    if (!city) return alert('المرجو اختيار مدينتك');
+    if (!phone || phone.replace(/\D/g, '').length < 9) return alert('المرجو إدخال رقم هاتف مغربي صحيح');
+    if (!agree) return alert('يجب الموافقة على شروط وقتي أولاً');
+
+    if (SCRIPT_URL.includes("ضع_رابط")) {
+      alert('يرجى ربط رابط Google Apps Script أولاً في الكود البرمجي!');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = "جاري النشر...";
+    btn.disabled = true;
+
+    const newE = {
+      name: `${first} ${last}`,
+      job: job,
+      phone: phone,
+      price: price || 'يحدد بعد الاتصال',
+      city: city,
+      desc: desc,
+      photo: photo,
+      isVip: false
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newE)
+      });
+
+      alert(`تم نشر حسابك بنجاح في مدينة ${city} 🎉`);
+      
+      ['f-first', 'f-last', 'f-job', 'f-city', 'f-phone', 'f-price', 'f-img', 'f-desc'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('f-agree').checked = false;
+
+      document.getElementById('cityFilter').value = city;
+      setCity(city);
+
+      const msg = encodeURIComponent(
+        `🔔 تسجيل جديد في وقتي:\n` +
+        `الاسم: ${newE.name}\n` +
+        `الحرفة: ${job}\n` +
+        `المدينة: ${city}\n` +
+        `الهاتف: ${phone}\n` +
+        `الثمن: ${newE.price}\n` +
+        `الوصف: ${desc || '--'}\n` +
+        `الموقع: ${SITE_LINK}`
+      );
+      window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, "_blank");
+
+      fetchExperts();
+    } catch (err) {
+      alert('حدث خطأ أثناء التسجيل، حاول مرة أخرى');
+    } finally {
+      btn.textContent = "نشر حسابي الآن ✅";
+      btn.disabled = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  initUI();
 </script>
 </body>
 </html>
